@@ -18,9 +18,9 @@ const app = express();
 app.post('/callback', line.middleware(config), (req, res) => {
   Promise
     .all(req.body.events.map(handleEvent))
-    .then(id = req.body.source.userId)
-    .then(console.log(`Got ${id}`))
     .then((result) => res.json(result))
+    .then(req.body.events.map(getid))
+    .then(console.log(result))
     .catch((err) => {
       console.error(err);
       res.status(500).end();
@@ -39,7 +39,11 @@ function handleEvent(event) {
   return client.replyMessage(event.replyToken, echo);
 }
 
-
+//getuserID
+function getid(event) {
+  const userid = event.source.userId;
+  return userid;
+}
 
 // listen on port
 const port = process.env.PORT || 3000;
