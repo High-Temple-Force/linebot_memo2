@@ -23,8 +23,8 @@ app.post('/callback', line.middleware(config), (req, res) => {
       console.error(err);
       res.status(500).end();
     });
-    const id = req.body.events.map(getid);
-    console.log(id);
+  const id = req.body.events.map(getid);
+  console.log(id);
 });
 
 // event handler
@@ -41,8 +41,13 @@ function handleEvent(event) {
 
 //getuserID
 function getid(event) {
-  const userid = event.source.userId;
-  return userid;
+  if (event.type !== 'message' || event.message.type !== 'text') {
+    ; //do nothing
+  } else {
+    const userid = event.source.userId;
+    return userid;
+  }  
+
 }
 
 // listen on port
