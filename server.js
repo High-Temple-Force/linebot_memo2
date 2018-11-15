@@ -19,12 +19,12 @@ app.post('/callback', line.middleware(config), (req, res) => {
   Promise
     .all(req.body.events.map(handleEvent))
     .then((result) => res.json(result))
-    .then(req.body.events.map(getid))
-    .then(console.log(result))
     .catch((err) => {
       console.error(err);
       res.status(500).end();
     });
+    const id = req.body.events.map(getid);
+    console.log(result);
 });
 
 // event handler
