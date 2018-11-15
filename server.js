@@ -18,7 +18,8 @@ const app = express();
 app.post('/callback', line.middleware(config), (req, res) => {
   Promise
     .all(req.body.events.map(handleEvent))
-    .then(console.log(req.body.source.userId))
+    .then(id = req.body.source.userId)
+    .then(console.log(`Got ${id}`))
     .then((result) => res.json(result))
     .catch((err) => {
       console.error(err);
