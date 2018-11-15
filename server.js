@@ -24,7 +24,7 @@ app.post('/callback', line.middleware(config), (req, res) => {
       res.status(500).end();
     });
     const id = req.body.events.map(getid);
-    console.log(result);
+    console.log(id);
 });
 
 // event handler
