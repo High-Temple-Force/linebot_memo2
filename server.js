@@ -49,9 +49,9 @@ app.post('/callback', line.middleware(config), (req, res) => {
       res.status(500).end();
     });
   req.body.events.map(getid);
-  console.log(id);
+  console.log(userid);
   const input_message = new Message();
-  input_message.update( { user_id: id }, { $set: { user_id: id , text: messatetext}}, { upsert:true });
+  input_message.update( { user_id: userid }, { $set: { user_id: userid , text: messatetext}}, { upsert:true });
 });
 
 // event handler
@@ -72,6 +72,7 @@ function getid(event) {
     ; //do nothing
   } else {
     const userid = event.source.userId;
+    return userid
    }  
 }
 
