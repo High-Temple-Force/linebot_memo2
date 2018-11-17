@@ -43,12 +43,14 @@ app.post('/callback', line.middleware(config), (req, res) => {
     Promise
         .all(req.body.events.map(handleEvent))
         .then((result) => res.json(result))
-        .then(req.body.events.map(getid))
-        .then(console.log(userid[0]))
         .catch((err) => {
             console.error(err);
             res.status(500).end();
         });
+
+    
+    const userid = req.body.events.map(getid);
+    console.log(userid[0]);
     //let addinfo = req.body.events.map(getid);
     //console.log(addinfo[]);
     //let input_message = new Message();
