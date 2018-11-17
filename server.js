@@ -47,11 +47,11 @@ app.post('/callback', line.middleware(config), (req, res) => {
             console.error(err);
             res.status(500).end();
         });
-
-    
     const userid = req.body.events.map(getid);
     const message_text = req.body.events.map(getmessage);
     let input_message = new Message();
+    input_message.user_id = userid[0];
+    input_message.text = message_text[0];
     input_message.update( { user_id: userid[0] }, { $set: { user_id: userid[0] , text: message_text[0] } }, { upsert:true });
 });
 
