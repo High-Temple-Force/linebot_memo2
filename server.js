@@ -17,13 +17,12 @@ const mongoose = require('mongoose');
 const dburi = 'mongodb://heroku_jzvwfqb3:aiqsab7lo63grgr9tot4c16234@ds163683.mlab.com:63683/heroku_jzvwfqb3'; //db uri
 const col_name = 'linebot_message';　//collection name
 // define schema MONGO
-const Schema = mongoose.Scheme;
-const MessageSchema = new Schema({
+const schema = mongoose.Scheme({
   user_id: String,
   text: String
 });
 // Create model memo documents in "linebot_message" NAME
-mongoose.model(col_name, MessageSchema);
+mongoose.model(col_name, schema);
 // Create message JSON 
 const Message = mongoose.model(col_name);
 const input_message = new Message();
