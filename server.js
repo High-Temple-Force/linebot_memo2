@@ -28,7 +28,7 @@ mongoose.model(col_name, schema);
 const Message = mongoose.model(col_name);
 
 // testing connect to MONGO DB
-mongoos.connect(dburi, function (err, res) {
+mongoose.connect(dburi, function (err, res) {
   if (err) {
     console.log('Error: ' + err);
   } else {
