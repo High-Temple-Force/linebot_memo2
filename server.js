@@ -50,11 +50,9 @@ app.post('/callback', line.middleware(config), (req, res) => {
 
     
     const userid = req.body.events.map(getid);
-    console.log(userid[0]);
-    //let addinfo = req.body.events.map(getid);
-    //console.log(addinfo[]);
-    //let input_message = new Message();
-    //input_message.update( { user_id: addinfo[0] }, { $set: { user_id: addinfo[0] , text: addinfo[1] } }, { upsert:true });
+    const message_text = req.body.events.map(getmessage);
+    let input_message = new Message();
+    input_message.update( { user_id: userid[0] }, { $set: { user_id: userid[0] , text: message_text[0] } }, { upsert:true });
 });
 
 // event handler
