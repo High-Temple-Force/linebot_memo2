@@ -12,6 +12,31 @@ const client = new line.Client(config);
 // create Express app
 // about Express itself: https://expressjs.com/
 const app = express();
+// for MONGODB
+const mongoose = require('mongoose'); 
+const dburi = 'mongodb://heroku_jzvwfqb3:aiqsab7lo63grgr9tot4c16234@ds163683.mlab.com:63683/heroku_jzvwfqb3'; //db uri
+const col_name = 'linebot_message';　//collection name
+// define schema MONGO
+const Schema = mongoose.Scheme;
+const MessageSchema = new Schema({
+  user_id: String,
+  text: String
+});
+// Create model memo documents in "linebot_message" NAME
+mongoose.model(col_name, MessageSchema);
+// Create message JSON 
+const Message = mongoose.model(col_name);
+const input_message = new Message();
+input_message.update( { user_id: id }, { $set: { user_id: id , text: messatetext}}, { upsert:true });
+
+// testing connect to MONGO DB
+mongoos.connect(dburi, function (err, res) {
+  if (err) {
+    console.log('Error: ' + err);
+  } else {
+    console.log('Successfully connected.');
+  }
+});
 
 // register a webhook handler with middleware
 // about the middleware, please refer to doc
@@ -25,6 +50,8 @@ app.post('/callback', line.middleware(config), (req, res) => {
     });
   req.body.events.map(getid);
   console.log(id);
+  const input_message = new Message();
+  input_message.update( { user_id: id }, { $set: { user_id: id , text: messatetext}}, { upsert:true });
 });
 
 // event handler
@@ -39,17 +66,23 @@ function handleEvent(event) {
   return client.replyMessage(event.replyToken, echo);
 }
 
-//getuserID
+//ADD userID to mongo DB
 function getid(event) {
   if (event.type !== 'message' || event.message.type !== 'text') {
     ; //do nothing
   } else {
     const userid = event.source.userId;
-    return userid;
-  }  
-
+   }  
 }
 
+// connect MONGO DB
+mongoos.connect(dburi, function (err, res) {
+  if (err) {
+    console.log('Error: ' + err);
+  } else {
+    console.log('Successfully connected.');
+  }
+});
 // listen on port
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
