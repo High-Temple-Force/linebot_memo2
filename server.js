@@ -26,8 +26,6 @@ const schema =  new Scheme({
 mongoose.model(col_name, schema);
 // Create message JSON 
 const Message = mongoose.model(col_name);
-const input_message = new Message();
-input_message.update( { user_id: id }, { $set: { user_id: id , text: messatetext}}, { upsert:true });
 
 // testing connect to MONGO DB
 mongoos.connect(dburi, function (err, res) {
