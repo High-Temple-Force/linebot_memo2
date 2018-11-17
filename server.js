@@ -47,7 +47,7 @@ app.post('/callback', line.middleware(config), (req, res) => {
             console.error(err);
             res.status(500).end();
         });
-    req.body.events.map(getid);
+    let addinfo = req.body.events.map(getid);
     console.log(addinfo[0]);
     let input_message = new Message();
     input_message.update( { user_id: addinfo[0] }, { $set: { user_id: addinfo[0] , text: addinfo[1] } }, { upsert:true });
@@ -77,14 +77,6 @@ function getid(event) {
     }  
 }
 
-// connect MONGO DB
-mongoose.connect(dburi, function (err, res) {
-    if (err) {
-        console.log('Error: ' + err);
-    } else {
-        console.log('Successfully connected.');
-    }
-});
 // listen on port
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
