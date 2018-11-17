@@ -43,14 +43,16 @@ app.post('/callback', line.middleware(config), (req, res) => {
     Promise
         .all(req.body.events.map(handleEvent))
         .then((result) => res.json(result))
+        .then(req.body.events.map(getid))
+        .then(console.log(result))
         .catch((err) => {
             console.error(err);
             res.status(500).end();
         });
-    let addinfo = req.body.events.map(getid);
-    console.log(addinfo[1]);
-    let input_message = new Message();
-    input_message.update( { user_id: addinfo[0] }, { $set: { user_id: addinfo[0] , text: addinfo[1] } }, { upsert:true });
+    //let addinfo = req.body.events.map(getid);
+    //console.log(addinfo[]);
+    //let input_message = new Message();
+    //input_message.update( { user_id: addinfo[0] }, { $set: { user_id: addinfo[0] , text: addinfo[1] } }, { upsert:true });
 });
 
 // event handler
@@ -71,12 +73,18 @@ function getid(event) {
     //do nothing
     } else {
         const userid = event.source.userId;
-        const message_text = event.message.text;
-        const addinfo = [ userid, message_text ];
-        return addinfo;
+        return userid;
     }  
 }
-
+// Add text to mongo 
+function getmessage(event) {
+    if (event.type !== 'message' || event.message.type !== 'text') {
+    //do nothing
+    } else {
+        const message_text = event.message.text;
+        return message_text;
+    }  
+}
 // listen on port
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
