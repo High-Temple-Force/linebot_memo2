@@ -44,7 +44,7 @@ app.post('/callback', line.middleware(config), (req, res) => {
         .all(req.body.events.map(handleEvent))
         .then((result) => res.json(result))
         .then(req.body.events.map(getid))
-        .then(console.log(getid[0]))
+        .then(console.log(userid[0]))
         .catch((err) => {
             console.error(err);
             res.status(500).end();
