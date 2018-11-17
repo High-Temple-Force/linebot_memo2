@@ -36,6 +36,7 @@ mongoose.connect(dburi, function (err, res) {
     }
 });
 
+
 // register a webhook handler with middleware
 // about the middleware, please refer to doc
 app.post('/callback', line.middleware(config), (req, res) => {
@@ -47,9 +48,9 @@ app.post('/callback', line.middleware(config), (req, res) => {
             res.status(500).end();
         });
     req.body.events.map(getid);
-    console.log(userid);
-    const input_message = new Message();
-    input_message.update( { user_id: userid }, { $set: { user_id: userid , text: messatetext}}, { upsert:true });
+    console.log(addinfo[0]);
+    let input_message = new Message();
+    input_message.update( { user_id: addinfo[0] }, { $set: { user_id: addinfo[0] , text: addinfo[1] } }, { upsert:true });
 });
 
 // event handler
@@ -70,7 +71,9 @@ function getid(event) {
     //do nothing
     } else {
         const userid = event.source.userId;
-        return userid;
+        const message_text = event.message.text;
+        const addinfo = [ userid, message_text ];
+        return addinfo;
     }  
 }
 
