@@ -12,6 +12,24 @@ const client = new line.Client(config);
 // create Express app
 // about Express itself: https://expressjs.com/
 const app = express();
+// for MONGODB
+const mongoos = require('mongoos');
+const dburi = 'mongodb://heroku_jzvwfqb3:aiqsab7lo63grgr9tot4c16234@ds163683.mlab.com:63683/heroku_jzvwfqb3';
+// define schema
+const Schema = mongoos.Scheme;
+const messageSchema = new Schema({
+  id: String,
+  text: String
+});
+
+// testing connect to MONGO DB
+mongoos.connect(dburi, function (err, res) {
+  if (err) {
+    console.log('Error: ' + err);
+  } else {
+    console.log('Successfully connected.');
+  }
+});
 
 // register a webhook handler with middleware
 // about the middleware, please refer to doc
@@ -47,9 +65,16 @@ function getid(event) {
     const userid = event.source.userId;
     return userid;
   }  
-
 }
 
+// connect MONGO DB
+mongoos.connect(dburi, function (err, res) {
+  if (err) {
+    console.log('Error: ' + err);
+  } else {
+    console.log('Successfully connected.');
+  }
+});
 // listen on port
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
