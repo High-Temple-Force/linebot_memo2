@@ -23,7 +23,7 @@ app.post('/callback', line.middleware(config), (req, res) => {
       console.error(err);
       res.status(500).end();
     });
-  const id = req.body.events.map(getid);
+  req.body.events.map(getid);
   console.log(id);
 });
 
