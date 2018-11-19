@@ -19,6 +19,7 @@ const client_db = new Client({
     ssl: true,
 });
 client_db.connect();
+
 // register a webhook handler with middleware
 // about the middleware, please refer to doc
 app.post('/callback', line.middleware(config), (req, res) => {
@@ -31,7 +32,11 @@ app.post('/callback', line.middleware(config), (req, res) => {
         });
     const userid = req.body.events.map(getid);
     const message_text = req.body.events.map(getmessage);
-    console.log(client_db.query('SELECT * from ' + col_name + ';'));
+    client_db.query('INSERT into ' + col_name + 
+        'values (1, ' + userid + ', ' + message_text + 
+        ') on conflict on constraint key do update set text=' + message_text + ';', function(err, result) {
+            if(err) return console.error(err);
+        });
 });
 
 // event handler
