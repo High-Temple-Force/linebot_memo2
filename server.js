@@ -19,11 +19,11 @@ const col_name = 'linebot_message'; //collection name
 // define schema MONGO
 const Schema = mongoose.Schema;
 // Create model memo documents in "linebot_message" NAME
-const Message = mongoose.model(col_name, schema);
-const schema =  new Schema({
+const scheme =  new Schema({
     user_id: String,
     text: String
 });
+const Message = mongoose.model(col_name, scheme);
 
 // testing connect to MONGO DB
 mongoose.connect(dburi, function (err, res) {
