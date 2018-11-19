@@ -31,7 +31,7 @@ app.post('/callback', line.middleware(config), (req, res) => {
         });
     const userid = req.body.events.map(getid);
     const message_text = req.body.events.map(getmessage);
-    client_db.query('SELECT * from ' + col_name + ';');
+    console.log(client_db.query('SELECT * from ' + col_name + ';'));
 });
 
 // event handler
