@@ -2,6 +2,7 @@
 
 const line = require('@line/bot-sdk');
 const express = require('express');
+const { Client } = require('pg');
 // create LINE SDK config from env variables
 const config = {
     channelAccessToken: 'QUhb/CZfcIOjJfW+eot0JOEko0AU4L2SbbPEAoWky/MrAJ3rlv8HXBWkHk6S5HhISfGfM6sMr7fqQg5zcfP5clonGNpzeGQHKZvpHXVchX+S8/FMS0nwwJg1uS3nN3o8DnVxzv1WGQGZN1wlqAl+cAdB04t89/1O/w1cDnyilFU=',
@@ -12,29 +13,12 @@ const client = new line.Client(config);
 // create Express app
 // about Express itself: https://expressjs.com/
 const app = express();
-// for MONGODB
-const mongoose = require('mongoose'); 
-const dburi = 'mongodb://heroku_jzvwfqb3:aiqsab7lo63grgr9tot4c16234@ds163683.mlab.com:63683/heroku_jzvwfqb3'; //db uri
 const col_name = 'linebot_message'; //collection name
-// define schema MONGO
-const Schema = mongoose.Schema;
-// Create model memo documents in "linebot_message" NAME
-const scheme =  new Schema({
-    user_id: String,
-    text: String
+const client_db = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: true,
 });
-const Message = mongoose.model(col_name, scheme);
-
-// testing connect to MONGO DB
-mongoose.connect(dburi, function (err, res) {
-    if (err) {
-        console.log('Error: ' + err);
-    } else {
-        console.log('Successfully connected.');
-    }
-});
-
-
+client_db.connect();
 // register a webhook handler with middleware
 // about the middleware, please refer to doc
 app.post('/callback', line.middleware(config), (req, res) => {
@@ -47,11 +31,7 @@ app.post('/callback', line.middleware(config), (req, res) => {
         });
     const userid = req.body.events.map(getid);
     const message_text = req.body.events.map(getmessage);
-    let input_message = new Message();
-    input_message.update( { user_id: userid[0] }, { $set: { user_id: userid[0] , text: message_text[0] } }, { upsert: true },function(err) {
-        if (err) {
-          console.log(err);}
-    });
+    client_db.query('SELECT * from ' + col_name + ';');
 });
 
 // event handler
