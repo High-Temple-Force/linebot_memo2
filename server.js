@@ -17,15 +17,13 @@ const mongoose = require('mongoose');
 const dburi = 'mongodb://heroku_jzvwfqb3:aiqsab7lo63grgr9tot4c16234@ds163683.mlab.com:63683/heroku_jzvwfqb3'; //db uri
 const col_name = 'linebot_message'; //collection name
 // define schema MONGO
-const Scheme = mongoose.Schema;
-const schema =  new Scheme({
+const Schema = mongoose.Schema;
+// Create model memo documents in "linebot_message" NAME
+const Message = mongoose.model(col_name, schema);
+const schema =  new Schema({
     user_id: String,
     text: String
 });
-// Create model memo documents in "linebot_message" NAME
-mongoose.model(col_name, schema);
-// Create message JSON 
-const Message = mongoose.model(col_name);
 
 // testing connect to MONGO DB
 mongoose.connect(dburi, function (err, res) {
@@ -50,9 +48,10 @@ app.post('/callback', line.middleware(config), (req, res) => {
     const userid = req.body.events.map(getid);
     const message_text = req.body.events.map(getmessage);
     let input_message = new Message();
-    input_message.user_id = userid[0];
-    input_message.text = message_text[0];
-    input_message.update( { user_id: userid[0] }, { $set: { user_id: userid[0] , text: message_text[0] } }, { upsert:true });
+    input_message.update( { user_id: userid[0] }, { $set: { user_id: userid[0] , text: message_text[0] } }, { upsert: true },function(err) {
+        if (err) {
+          console.log(err);}
+    });
 });
 
 // event handler
