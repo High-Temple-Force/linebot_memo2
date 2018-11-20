@@ -32,8 +32,9 @@ app.post('/callback', line.middleware(config), (req, res) => {
         });
     const userid = req.body.events.map(getid);
     const message_text = req.body.events.map(getmessage);
-    client_db.query("INSERT into " + col_name + " values (1, '" + userid + "', '" + message_text + 
-        "') on conflict on constraint key do update linebot_message set text = '" + message_text + "' where user_id = '"+ userid + "';", function(err, result) {
+    const query_bot = `INSERT into linebot_message values (1, '${userid}', '${message_text}') 
+    on conflict on constraint key do update linebot_message set text = '${message_text}' where user_id = '${userid}';`;
+    client_db.query(query_bot, function(err, result) {
             if(err) return console.error(err);
         });
 });

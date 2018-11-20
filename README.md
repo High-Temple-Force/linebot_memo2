@@ -4,5 +4,8 @@ linebot memo
 ## Env
 Heroku
 
+## DB
+Postgres on Heroku
+
 ## Description
-From official exapmle
+From official example
