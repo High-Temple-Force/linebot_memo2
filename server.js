@@ -34,10 +34,10 @@ app.post('/callback', line.middleware(config), (req, res) => {
     const message_text = req.body.events.map(getmessage);
     console.log(userid);
     const query_bot = `INSERT into linebot_message VALUES 
-    (1, ${userid}, ${message_text}) 
+    (1, ${userid[0]}, ${message_text[0]}) 
     ON CONFLICT (use_id) 
     DO UPDATE linebot_message 
-    set text = ${message_text} where user_id = ${userid};`;
+    set text = ${message_text[0]} where user_id = ${userid[0]};`;
     client_db.query(query_bot, function(err, result) {
             if(err) return console.error(err);
         });
