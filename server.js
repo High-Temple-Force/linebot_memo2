@@ -18,7 +18,13 @@ const client_db = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
 });
-
+client_db.connect(function(err) {
+    if (err) {
+        console.error('error connecting: ' );
+        return;
+    } 
+    console.log('connected to POSTGRE');
+});
 // register a webhook handler with middleware
 // about the middleware, please refer to doc
 app.post('/callback', line.middleware(config), (req, res) => {
@@ -34,13 +40,6 @@ app.post('/callback', line.middleware(config), (req, res) => {
     const message_text = req.body.events.map(getmessage);
     console.log(userid[0]);
     console.log(message_text[0]);
-    client_db.connect(function(err) {
-        if (err) {
-            console.error('error connecting: ' );
-            return;
-        } 
-        console.log('connected to POSTGRE');
-    });
     // Add data to DB query from here
     const query_bot = `INSERT into linebot_message VALUES 
     (1, '${userid[0]}', '${message_text[0]}') ON CONFLICT (user_id) 
@@ -70,7 +69,10 @@ function handleEvent(event) {
     // create a echoing text message
     let replytext = '';
     if(event.message.text === 'やった'){
+        
         replytext = '通知を終了しました。';
+    } else if (event.message.text === 'つかいかた') {
+        replytext = '"やった"と入力すれば、通知を止めます。新しいメモを送信すれば、その内容を新たに通知します。';
     } else {
         replytext = '新しいメモを登録しました！また通知しますね。' ;
     }
