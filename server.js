@@ -61,9 +61,9 @@ function handleEvent(event) {
     // create a echoing text message
     let replytext = '';
     if(event.message.text === 'やった'){
-        replytext = '通知を終了しました。'
+        replytext = '通知を終了しました。';
     } else {
-        replytext = '新しいメモを登録しました！また通知しますね。' 
+        replytext = '新しいメモを登録しました！また通知しますね。' ;
     }
     const echo = { type: 'text', text: replytext };
     // use reply API
