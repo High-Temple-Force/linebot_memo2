@@ -59,7 +59,7 @@ function handleEvent(event) {
         return Promise.resolve(null);
     }
     // create a echoing text message
-    const echo = { type: 'text', text: event.message.text };
+    const echo = { type: 'text', text: '新しいメモを登録しました！また通知しますね。' };
     // use reply API
     return client.replyMessage(event.replyToken, echo);
 }
