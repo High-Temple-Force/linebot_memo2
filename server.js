@@ -23,7 +23,7 @@ client_db.connect(function(err) {
         console.error('error connecting: ' );
         return;
     } 
-    console.log('connected to POSTGRE');
+    console.log('connected to POSTGRE, running.');
 });
 // register a webhook handler with middleware
 // about the middleware, please refer to doc
@@ -100,11 +100,11 @@ function updatedata(event) {
     const userid = event.source.userId;
     const message_text = event.message.text;
     console.log(userid);
-    console.log(message_text[0]);
+    console.log(message_text);
     // Add data to DB query from here
     let query_bot = `INSERT into linebot_message VALUES 
-    (1, '${userid}', '${message_text[0]}') ON CONFLICT (user_id) 
-    DO UPDATE set text = '${message_text[0]}';`;
+    (1, '${userid}', '${message_text}') ON CONFLICT (user_id) 
+    DO UPDATE set text = '${message_text}';`;
     //until here
     client_db.query(query_bot, function(err, result) {
             if(err) {
