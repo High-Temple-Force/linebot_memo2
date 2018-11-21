@@ -18,7 +18,13 @@ const client_db = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
 });
-client_db.connect();
+client_db.connect(function(err) {
+    if (err) {
+        console.error('error connecting: ' );
+        return;
+    } 
+    console.log('connected to POSTGRE');
+});
 
 // register a webhook handler with middleware
 // about the middleware, please refer to doc
