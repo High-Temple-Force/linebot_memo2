@@ -98,7 +98,7 @@ function deletedb(event) {
 // add func
 function updatedata(event) {
     const userid = event.source.userId;
-    const message_text = req.body.events.map(getmessage);
+    const message_text = event.message.text;
     console.log(userid);
     console.log(message_text[0]);
     // Add data to DB query from here
