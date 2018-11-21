@@ -36,21 +36,6 @@ app.post('/callback', line.middleware(config), (req, res) => {
             res.status(500).end();
             return;
         });
-    const userid = req.body.events.map(getid);
-    const message_text = req.body.events.map(getmessage);
-    console.log(userid[0]);
-    console.log(message_text[0]);
-    // Add data to DB query from here
-    let query_bot = `INSERT into linebot_message VALUES 
-    (1, '${userid[0]}', '${message_text[0]}') ON CONFLICT (user_id) 
-    DO UPDATE set text = '${message_text[0]}';`;
-    //until here
-    client_db.query(query_bot, function(err, result) {
-            if(err) {
-                return console.error(err);
-            } 
-            console.log(`Updated DB as ${ result }`);
-    });
 });
 
 // listen on port
@@ -65,6 +50,7 @@ function handleEvent(event) {
     let replytext = ''
     if (event.type !== 'message' || event.message.type !== 'text') {
     // ignore non-text-message event
+        replytext = 'エラーが発生しました。';
         return Promise.resolve(null);
     } else if (event.message.text === 'やった') {
         deletedb(event);
@@ -72,6 +58,7 @@ function handleEvent(event) {
     } else if (event.message.text === 'つかいかた') {
         replytext = '"やった"と入力すれば、通知を止めます。新しいメモを送信すれば、その内容を新たに通知します。';
     } else {
+        updatedata(event);
         replytext = '新しいメモを登録しました！また通知しますね。' ;
     }
     const echo = { type: 'text', text: replytext };
@@ -100,11 +87,29 @@ function getmessage(event) {
 // about PostgreSQL
 function deletedb(event) {
     const userid = event.source.userId;
-    let query_bot = `DELETE from linebot_message WHERE user_id = '${ userid }'`
+    let query_bot = `DELETE from linebot_message WHERE user_id = '${ userid }'`;
     client_db.query(query_bot, function(err, result) {
         if(err) {
                 return console.error(err);
         } 
         console.log(`Delete DB as ${ result }`);
         });
+}
+// add func
+function updatedata(event) {
+    const userid = event.source.userId;
+    const message_text = req.body.events.map(getmessage);
+    console.log(userid);
+    console.log(message_text[0]);
+    // Add data to DB query from here
+    let query_bot = `INSERT into linebot_message VALUES 
+    (1, '${userid}', '${message_text[0]}') ON CONFLICT (user_id) 
+    DO UPDATE set text = '${message_text[0]}';`;
+    //until here
+    client_db.query(query_bot, function(err, result) {
+            if(err) {
+                return console.error(err);
+            } 
+            console.log(`Updated data as ${ result }`);
+    });
 }
