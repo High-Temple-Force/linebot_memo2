@@ -41,7 +41,7 @@ app.post('/callback', line.middleware(config), (req, res) => {
     console.log(userid[0]);
     console.log(message_text[0]);
     // Add data to DB query from here
-    const query_bot = `INSERT into linebot_message VALUES 
+    let query_bot = `INSERT into linebot_message VALUES 
     (1, '${userid[0]}', '${message_text[0]}') ON CONFLICT (user_id) 
     DO UPDATE set text = '${message_text[0]}';`;
     //until here
@@ -50,7 +50,7 @@ app.post('/callback', line.middleware(config), (req, res) => {
                 return console.error(err);
             } 
             console.log(`Updated DB as ${ result }`);
-        });
+    });
 });
 
 // listen on port
@@ -65,11 +65,9 @@ function handleEvent(event) {
     if (event.type !== 'message' || event.message.type !== 'text') {
     // ignore non-text-message event
         return Promise.resolve(null);
-    }
+    } else if (event.message.text === 'やった') {
     // create a echoing text message
-    let replytext = '';
-    if(event.message.text === 'やった'){
-        
+        deletedb(event);
         replytext = '通知を終了しました。';
     } else if (event.message.text === 'つかいかた') {
         replytext = '"やった"と入力すれば、通知を止めます。新しいメモを送信すれば、その内容を新たに通知します。';
@@ -100,3 +98,13 @@ function getmessage(event) {
     }  
 }
 // about PostgreSQL
+function deletedb(event) {
+    const userid = event.source.userId;
+    let query_bot = `DELETE from linebot_message WHERE user_id = '${ userid }'`
+    client_db.query(query_bot, function(err, result) {
+        if(err) {
+                return console.error(err);
+        } 
+        console.log(`Delete DB as ${ result }`);
+        });
+}
