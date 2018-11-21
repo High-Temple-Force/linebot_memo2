@@ -45,7 +45,10 @@ app.post('/callback', line.middleware(config), (req, res) => {
     (1, '${userid[0]}', '${message_text[0]}') ON CONFLICT (user_id) 
     DO UPDATE set text = '${message_text[0]}';`;
     client_db.query(query_bot, function(err, result) {
-            if(err) return console.error(err);
+            if(err) {
+                return console.error(err);
+            }
+            console.log(`Updated DB as ${ result }`);
         });
 });
 
