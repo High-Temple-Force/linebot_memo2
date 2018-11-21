@@ -62,11 +62,11 @@ app.listen(port, () => {
 
 // event handler
 function handleEvent(event) {
+    let replytext = ''
     if (event.type !== 'message' || event.message.type !== 'text') {
     // ignore non-text-message event
         return Promise.resolve(null);
     } else if (event.message.text === 'やった') {
-    // create a echoing text message
         deletedb(event);
         replytext = '通知を終了しました。';
     } else if (event.message.text === 'つかいかた') {
