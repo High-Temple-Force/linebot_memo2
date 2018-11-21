@@ -47,7 +47,7 @@ app.post('/callback', line.middleware(config), (req, res) => {
     client_db.query(query_bot, function(err, result) {
             if(err) {
                 return console.error(err);
-            }
+            } 
             console.log(`Updated DB as ${ result }`);
         });
 });
@@ -59,7 +59,13 @@ function handleEvent(event) {
         return Promise.resolve(null);
     }
     // create a echoing text message
-    const echo = { type: 'text', text: '新しいメモを登録しました！また通知しますね。' };
+    let replytext = '';
+    if(event.message.text === 'やった'){
+        replytext = '通知を終了しました。'
+    } else {
+        replytext = '新しいメモを登録しました！また通知しますね。' 
+    }
+    const echo = { type: 'text', text: replytext };
     // use reply API
     return client.replyMessage(event.replyToken, echo);
 }
