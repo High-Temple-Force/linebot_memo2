@@ -41,9 +41,11 @@ app.post('/callback', line.middleware(config), (req, res) => {
         } 
         console.log('connected to POSTGRE');
     });
+    // Add data to DB query from here
     const query_bot = `INSERT into linebot_message VALUES 
     (1, '${userid[0]}', '${message_text[0]}') ON CONFLICT (user_id) 
     DO UPDATE set text = '${message_text[0]}';`;
+    //until here
     client_db.query(query_bot, function(err, result) {
             if(err) {
                 return console.error(err);
@@ -51,6 +53,13 @@ app.post('/callback', line.middleware(config), (req, res) => {
             console.log(`Updated DB as ${ result }`);
         });
 });
+
+// listen on port
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`listening on ${port}`);
+});
+
 
 // event handler
 function handleEvent(event) {
@@ -88,8 +97,4 @@ function getmessage(event) {
         return message_text;
     }  
 }
-// listen on port
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`listening on ${port}`);
-});
+// about PostgreSQL
