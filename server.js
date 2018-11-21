@@ -65,26 +65,7 @@ function handleEvent(event) {
     // use reply API
     return client.replyMessage(event.replyToken, echo);
 }
-
-//ADD userID to mongo DB
-function getid(event) {
-    if (event.type !== 'message' || event.message.type !== 'text') {
-    //do nothing
-    } else {
-        const userid = event.source.userId;
-        return userid;
-    }  
-}
-// Add text to mongo 
-function getmessage(event) {
-    if (event.type !== 'message' || event.message.type !== 'text') {
-    //do nothing
-    } else {
-        const message_text = event.message.text;
-        return message_text;
-    }  
-}
-// about PostgreSQL
+// delete data
 function deletedb(event) {
     const userid = event.source.userId;
     let query_bot = `DELETE from linebot_message WHERE user_id = '${ userid }'`;
@@ -95,7 +76,7 @@ function deletedb(event) {
         console.log(`Delete DB as ${ result }`);
         });
 }
-// add func
+// update func
 function updatedata(event) {
     const userid = event.source.userId;
     const message_text = event.message.text;
