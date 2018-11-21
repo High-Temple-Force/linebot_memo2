@@ -18,14 +18,6 @@ const client_db = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
 });
-client_db.connect(function(err) {
-    if (err) {
-        console.error('error connecting: ' );
-        return;
-    } 
-    console.log('connected to POSTGRE');
-});
-
 // register a webhook handler with middleware
 // about the middleware, please refer to doc
 app.post('/callback', line.middleware(config), (req, res) => {
@@ -40,6 +32,13 @@ app.post('/callback', line.middleware(config), (req, res) => {
     const message_text = req.body.events.map(getmessage);
     console.log(userid[0]);
     console.log(message_text[0]);
+    client_db.connect(function(err) {
+        if (err) {
+            console.error('error connecting: ' );
+            return;
+        } 
+        console.log('connected to POSTGRE');
+    });
     const query_bot = `INSERT into linebot_message VALUES 
     (1, '${userid[0]}', '${message_text[0]}') ON CONFLICT (user_id) 
     DO UPDATE set text = '${message_text[0]}' where user_id = '${userid[0]}';`;
