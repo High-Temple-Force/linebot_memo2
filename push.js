@@ -25,7 +25,7 @@ client_db.connect(function(err) {
     } 
     console.log('connected to POSTGRE, running.');
 });
-const query_select = `SELECT * from linebot_message;`;
+const query_select = 'SELECT user_id from linebot_message;';
 const message = {
     type: 'text',
     text: 'Hello World!'
