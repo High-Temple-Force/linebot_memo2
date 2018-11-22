@@ -2,25 +2,43 @@
 
 const express = require('express');
 const line = require('@line/bot-sdk');
+const { Client } = require('pg');
 // PORT number may be needed to change
 const PORT = process.env.PORT || 3010 ;
 // create LINE SDK config from env variables
 const CHANNEL_ACCESS_TOKEN = 'QUhb/CZfcIOjJfW+eot0JOEko0AU4L2SbbPEAoWky/MrAJ3rlv8HXBWkHk6S5HhISfGfM6sMr7fqQg5zcfP5clonGNpzeGQHKZvpHXVchX+S8/FMS0nwwJg1uS3nN3o8DnVxzv1WGQGZN1wlqAl+cAdB04t89/1O/w1cDnyilFU=';
 const config = {
-    channelAccessToken: CHANNEL_ACCESS_TOKEN
+    channelAccessToken: CHANNEL_ACCESS_TOKEN,
+    channelSecret: '21fea600e9c1412f9325d76544f44cd7'
 };
-
+// create LINE SDK client
 const app = express();
 const client = new line.Client(config);
+const client_db = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: true,
+});
+client_db.connect(function(err) {
+    if (err) {
+        console.error('error connecting: ' );
+        return;
+    } 
+    console.log('connected to POSTGRE, running.');
+});
+const query_select = `SELECT * from linebot_message;`;
 const message = {
     type: 'text',
     text: 'Hello World!'
-  };
-const url = 'https://api.line.me/v2/bot/message/push';
-const headers = {
-    "Content-Type": "application/json",
-    "Authorization": "Bearer " + CHANNEL_ACCESS_TOKEN,
-  };
+};
+
+client_db.query(query_select, function(err, result) {
+    if(err) {
+        return console.error(err);
+    } 
+    console.log(`SELECT DB as ${ result }`);
+    console.log(result[0]);
+});
+
 
 // Pushmessage func
 function sendpush(mes) {

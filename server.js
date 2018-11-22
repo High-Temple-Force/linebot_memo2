@@ -74,7 +74,7 @@ function deletedb(event) {
                 return console.error(err);
         } 
         console.log(`Delete DB as ${ result }`);
-        });
+    });
 }
 // update func
 function updatedata(event) {
