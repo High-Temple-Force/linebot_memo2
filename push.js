@@ -38,8 +38,9 @@ client_db.query(query_select, function(err, result) {
     const results = result.rows;
     results.map(row => {
         console.log(`SELECT DB as ${ JSON.stringify(row) }`);
+        console.log(row[0]);
     });
-    console.log(result[0]);
+    
 });
 
 
