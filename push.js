@@ -26,11 +26,6 @@ client_db.connect(function(err) {
     console.log('connected to POSTGRE, running.');
 });
 const query_select = 'SELECT * from linebot_message;';
-const message = {
-    type: 'text',
-    text: 'Hello World!'
-};
-
 client_db.query(query_select, function(err, result) {
     if(err) {
         return console.error(err);
@@ -38,15 +33,21 @@ client_db.query(query_select, function(err, result) {
     const results = result.rows;
     results.map(row => {
         console.log(`SELECT DB as ${ JSON.stringify(row) }`);
-        console.log(row.user_id);
+        const userid_push = row.user_id;
+        const message_push = row.text;
+        sendpush(userid_push, message_push);
     });
     
 });
 
 
 // Pushmessage func
-function sendpush(mes) {
-    client.pushMessage('送信ユーザID', message)
+function sendpush(message_push, userid_push) {
+    const message = {
+        type: 'text',
+        text: message_push
+    };
+    client.pushMessage(userid_push, message)
         .then(() => {
             console.log('Sent push messages');
         })
