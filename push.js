@@ -40,20 +40,19 @@ client_db.query(query_select, function(err, result) {
     
 });
 
-
 // Pushmessage func
 function sendpush(message_push, userid_push) {
     const message = {
         type: 'text',
         text: message_push
     };
-    client.pushMessage(userid_push, message)
+    client.pushMessage(userid_push, {
+        message })
         .then(() => {
             console.log('Sent push messages');
         })
         .catch((err) => {
             console.error(err);
-            res.status(500).end();
             return;
         });
 }
