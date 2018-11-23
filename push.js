@@ -42,12 +42,10 @@ client_db.query(query_select, function(err, result) {
 
 // Pushmessage func
 function sendpush(message_push, userid_push) {
-    const message = {
-        type: 'text',
-        text: message_push
-    };
     client.pushMessage(userid_push, {
-        message })
+        type: 'text',
+        text: message_push,
+        })
         .then(() => {
             console.log('Sent push messages');
         })
