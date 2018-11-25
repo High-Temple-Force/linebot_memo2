@@ -6,18 +6,23 @@ A LINE bot trying not to forget what you should remember
 
 ## Architecture
 
-#### Language
-Heroku
+### Language
+Javascript
+
+### Fremework
 Node.js
 
-## DB
-Postgres on Heroku
+### Enviroment
+Heroku
 
-## Description
-From official example
+### Database
+PostgreSQL
+
 
 ## How it works
 1. User sends a message
 2. Got userid and message on Postgres on Heroku
-3. Send back a message about how to use
+3. Send back a message once an hour
 
+## Lisence
+MIT Lisence
