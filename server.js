@@ -13,7 +13,6 @@ const client = new line.Client(config);
 // create Express app
 // about Express itself: https://expressjs.com/
 const app = express();
-const col_name = 'linebot_message'; //collection name
 const client_db = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
@@ -47,7 +46,7 @@ app.listen(port, () => {
 
 // event handler
 function handleEvent(event) {
-    let replytext = ''
+    let replytext = '';
     if (event.type !== 'message' || event.message.type !== 'text') {
     // ignore non-text-message event
         replytext = 'エラーが発生しました。';
@@ -56,10 +55,10 @@ function handleEvent(event) {
         deletedb(event);
         replytext = '通知を終了しました。';
     } else if (event.message.text === 'つかいかた') {
-        replytext = '"やった"と入力すれば、通知を止めます。新しいメモを送信すれば、その内容を新たに通知します。';
+        replytext = '"やった"と入力すれば、通知を止めます。新しいメモを送信すれば、その内容を1時間ごとに新たに通知します。';
     } else {
         updatedata(event);
-        replytext = '新しいメモを登録しました！また通知しますね。' ;
+        replytext = '新しいメモを登録しました！毎時0分ごろ通知しますね。通知を終了するには、"やった"と入力してください。' ;
     }
     const echo = { type: 'text', text: replytext };
     // use reply API
@@ -71,7 +70,7 @@ function deletedb(event) {
     let query_bot = `DELETE from linebot_message WHERE user_id = '${ userid }'`;
     client_db.query(query_bot, function(err, result) {
         if(err) {
-                return console.error(err);
+            return console.error(err);
         } 
         console.log(`Delete DB as ${ result }`);
     });
@@ -88,9 +87,9 @@ function updatedata(event) {
     DO UPDATE set text = '${message_text}';`;
     //until here
     client_db.query(query_bot, function(err, result) {
-            if(err) {
-                return console.error(err);
-            } 
-            console.log(`Updated data as ${ result }`);
+        if(err) {
+            return console.error(err);
+        } 
+        console.log(`Updated data as ${ result }`);
     });
 }

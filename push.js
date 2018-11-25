@@ -1,10 +1,7 @@
 'use strict';
 
-const express = require('express');
 const line = require('@line/bot-sdk');
 const { Client } = require('pg');
-// PORT number may be needed to change
-const PORT = process.env.PORT || 3010 ;
 // create LINE SDK config from env variables
 const CHANNEL_ACCESS_TOKEN = 'QUhb/CZfcIOjJfW+eot0JOEko0AU4L2SbbPEAoWky/MrAJ3rlv8HXBWkHk6S5HhISfGfM6sMr7fqQg5zcfP5clonGNpzeGQHKZvpHXVchX+S8/FMS0nwwJg1uS3nN3o8DnVxzv1WGQGZN1wlqAl+cAdB04t89/1O/w1cDnyilFU=';
 const config = {
@@ -12,7 +9,6 @@ const config = {
     channelSecret: '21fea600e9c1412f9325d76544f44cd7'
 };
 // create LINE SDK client
-const app = express();
 const client = new line.Client(config);
 const client_db = new Client({
     connectionString: process.env.DATABASE_URL,
