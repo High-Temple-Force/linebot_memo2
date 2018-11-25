@@ -1,5 +1,6 @@
 'use strict';
 
+const express = require('express');
 const line = require('@line/bot-sdk');
 const { Client } = require('pg');
 // create LINE SDK config from env variables
@@ -21,6 +22,8 @@ client_db.connect(function(err) {
     } 
     console.log('connected to POSTGRE, running.');
 });
+
+// update db 
 const query_select = 'SELECT * from linebot_message;';
 client_db.query(query_select, function(err, result) {
     if(err) {
@@ -37,10 +40,10 @@ client_db.query(query_select, function(err, result) {
 });
 
 // Pushmessage func
-function sendpush(message_push, userid_push) {
-    client.pushMessage(message_push, {
+function sendpush(userid_push, message_push) {
+    client.pushMessage(userid_push, {
         type: 'text',
-        text: userid_push })
+        text: message_push })
         .then(() => {
             console.log('Sent push messages');
         })

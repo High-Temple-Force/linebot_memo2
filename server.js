@@ -17,6 +17,8 @@ const client_db = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
 });
+
+// Connecting to Postgre DB
 client_db.connect(function(err) {
     if (err) {
         console.error('error connecting: ' );
@@ -24,8 +26,9 @@ client_db.connect(function(err) {
     } 
     console.log('connected to POSTGRE, running.');
 });
+
 // register a webhook handler with middleware
-// about the middleware, please refer to doc
+// Use eventhandler for each request
 app.post('/callback', line.middleware(config), (req, res) => {
     Promise
         .all(req.body.events.map(handleEvent))
@@ -44,7 +47,7 @@ app.listen(port, () => {
 });
 
 
-// event handler
+// eventhandler
 function handleEvent(event) {
     let replytext = '';
     if (event.type !== 'message' || event.message.type !== 'text') {
@@ -52,18 +55,22 @@ function handleEvent(event) {
         replytext = 'エラーが発生しました。';
         return Promise.resolve(null);
     } else if (event.message.text === 'やった') {
+        // stop push notification 
         deletedb(event);
         replytext = '通知を終了しました。';
     } else if (event.message.text === 'つかいかた') {
-        replytext = '"やった"と入力すれば、通知を止めます。新しいメモを送信すれば、その内容を1時間ごとに新たに通知します。';
+        // show how to use
+        replytext = '"やった"と入力すれば、通知を止めます。新しいメモを送信すれば、その内容を1時間ごとに通知します。';
     } else {
+        // update data on db when new messages come
         updatedata(event);
-        replytext = '新しいメモを登録しました！毎時0分ごろ通知しますね。通知を終了するには、"やった"と入力してください。' ;
+        replytext = '新しいメモを登録しました！毎時0分ごろ通知します。通知を終了するには、"やった"と入力してください。' ;
     }
     const echo = { type: 'text', text: replytext };
     // use reply API
     return client.replyMessage(event.replyToken, echo);
 }
+
 // delete data
 function deletedb(event) {
     const userid = event.source.userId;
@@ -75,6 +82,7 @@ function deletedb(event) {
         console.log(`Delete DB as ${ result }`);
     });
 }
+
 // update func
 function updatedata(event) {
     const userid = event.source.userId;
