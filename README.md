@@ -1,8 +1,14 @@
-# linebot_memo2
-linebot memo
+# Product name
+絶対忘れない memo BOT
 
-## Env
+## What's this
+A LINE bot trying not to forget what you should remember
+
+## Architecture
+
+#### Language
 Heroku
+Node.js
 
 ## DB
 Postgres on Heroku
@@ -12,5 +18,6 @@ From official example
 
 ## How it works
 1. User sends a message
-2. Add the userid and message to Postgres on Heroku
-3. Send back a message about how to
+2. Got userid and message on Postgres on Heroku
+3. Send back a message about how to use
+
