@@ -1,8 +1,10 @@
 ## Name of the product
 絶対忘れない memo BOT
 
+
 ## What's this
 A LINE bot trying not to forget what you should remember
+
 
 ## Architecture
 
@@ -24,8 +26,9 @@ PostgreSQL
 > 2. Got userid and message on Postgres on Heroku
 > 3. Send back the message once an hour
 
+
 ## Adding BOT 
-*QRpics*
+https://github.com/High-Temple-Force/linebot_memo2/issues/url
 
 ## Lisence
 MIT Lisence
