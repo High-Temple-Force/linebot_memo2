@@ -1,4 +1,4 @@
-# Product name
+## Name of the product
 絶対忘れない memo BOT
 
 ## What's this
@@ -20,9 +20,9 @@ PostgreSQL
 
 
 ## How it works
-1. User sends a message
-2. Got userid and message on Postgres on Heroku
-3. Send back the message once an hour
+> 1. User sends a message
+> 2. Got userid and message on Postgres on Heroku
+> 3. Send back the message once an hour
 
 ## Adding BOT 
 *QRpics*
