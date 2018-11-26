@@ -28,7 +28,9 @@ PostgreSQL
 
 
 ## Adding BOT 
-https://github.com/High-Temple-Force/linebot_memo2/issues/url
+[
+<img width="180" alt="2018-11-27 0 23 08" src="https://user-images.githubusercontent.com/40015780/49023562-d7c55b00-f1da-11e8-92b6-df4d24aec879.png">
+](url)
 
 ## Lisence
 MIT Lisence
