@@ -22,7 +22,10 @@ PostgreSQL
 ## How it works
 1. User sends a message
 2. Got userid and message on Postgres on Heroku
-3. Send back a message once an hour
+3. Send back the message once an hour
+
+## Adding BOT 
+*QRpics*
 
 ## Lisence
 MIT Lisence
