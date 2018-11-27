@@ -11,7 +11,6 @@ const config = {
 // create LINE SDK client
 const client = new line.Client(config);
 // create Express app
-// about Express itself: https://expressjs.com/
 const app = express();
 const client_db = new Client({
     connectionString: process.env.DATABASE_URL,
