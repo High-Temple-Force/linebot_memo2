@@ -8,37 +8,52 @@ const config = {
     channelAccessToken: process.env.ACCESS_TOKEN,
     channelSecret: process.env.SECRET_KEY
 };
+// query
+const query_select = 'SELECT * from linebot_message;';
 // create LINE SDK client
 const client = new line.Client(config);
 const client_db = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
 });
-client_db.connect(function(err) {
-    if (err) {
-        console.error('error connecting: ' );
-        return;
-    } 
-    console.log('connected to POSTGRE, running.');
+Promise
+.all(connectcheck())
+.then(updatequery(query_select))
+.catch((err) => {
+    console.error(err);
+    res.status(500).end();
+    return;
 });
+
+// connect to db func
+function connectcheck() {
+    client_db.connect(function(err) {
+        if (err) {
+            console.error('error connecting: ' );
+            return;
+        } 
+        console.log('connected to POSTGRE, running.');
+});
+}
 
 // update db func
-const query_select = 'SELECT * from linebot_message;';
-client_db.query(query_select, function(err, result) {
-    if(err) {
-        return console.error(err);
-    } 
-    const results = result.rows;
-    results.map(row => {
-        console.log(`SELECT DB as ${ JSON.stringify(row) }`);
-        const userid_push = row.user_id;
-        const message_push = row.text;
-        sendpush(userid_push, message_push);
+function updatequery(query) {
+    client_db.query(query_select, function(err, result) {
+        if(err) {
+            return console.error(err);
+        } 
+        const results = result.rows;
+        results.map(row => {
+            console.log(`SELECT DB as ${ JSON.stringify(row) }`);
+            const userid_push = row.user_id;
+            const message_push = row.text;
+            sendpush(userid_push, message_push);
+        });
     });
-    
-});
+}
 
-// Pushmessage func
+
+// pushmessage func
 function sendpush(userid_push, message_push) {
     client.pushMessage(userid_push, {
         type: 'text',
