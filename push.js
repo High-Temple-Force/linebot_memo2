@@ -5,8 +5,8 @@ const line = require('@line/bot-sdk');
 const { Client } = require('pg');
 // create LINE SDK config from env variables
 const config = {
-    channelAccessToken: ACCESS_TOKEN,
-    channelSecret: SECRET_KEY
+    channelAccessToken: process.env.ACCESS_TOKEN,
+    channelSecret: process.env.SECRET_KEY
 };
 // create LINE SDK client
 const client = new line.Client(config);
