@@ -47,7 +47,7 @@ app.listen(port, () => {
 });
 
 
-// eventhandler
+// eventhandler func
 function handleEvent(event) {
     let replytext = '';
     if (event.type !== 'message' || event.message.type !== 'text') {
@@ -71,7 +71,7 @@ function handleEvent(event) {
     return client.replyMessage(event.replyToken, echo);
 }
 
-// delete data
+// delete data func
 function deletedb(event) {
     const userid = event.source.userId;
     let query_bot = `DELETE from linebot_message WHERE user_id = '${ userid }'`;

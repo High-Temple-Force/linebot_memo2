@@ -22,7 +22,7 @@ client_db.connect(function(err) {
     console.log('connected to POSTGRE, running.');
 });
 
-// update db 
+// update db func
 const query_select = 'SELECT * from linebot_message;';
 client_db.query(query_select, function(err, result) {
     if(err) {
