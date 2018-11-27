@@ -5,8 +5,8 @@ const express = require('express');
 const { Client } = require('pg');
 // create LINE SDK config from env variables
 const config = {
-    channelAccessToken: 'QUhb/CZfcIOjJfW+eot0JOEko0AU4L2SbbPEAoWky/MrAJ3rlv8HXBWkHk6S5HhISfGfM6sMr7fqQg5zcfP5clonGNpzeGQHKZvpHXVchX+S8/FMS0nwwJg1uS3nN3o8DnVxzv1WGQGZN1wlqAl+cAdB04t89/1O/w1cDnyilFU=',
-    channelSecret: '21fea600e9c1412f9325d76544f44cd7'
+    channelAccessToken: ACCESS_TOKEN,
+    channelSecret: SECRET_KEY
 };
 // create LINE SDK client
 const client = new line.Client(config);
