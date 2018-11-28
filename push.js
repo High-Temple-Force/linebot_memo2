@@ -38,7 +38,7 @@ function connectcheck() {
 
 // update db func
 function updatequery(query) {
-    client_db.query(query_select, function(err, result) {
+    client_db.query(query, function(err, result) {
         if(err) {
             return console.error(err);
         } 
